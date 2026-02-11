@@ -1,0 +1,306 @@
+/* ============================================
+   优化后的徽章墙样式 - 响应式网格布局
+   ============================================ */
+
+/* 徽章墙容器 */
+.badges-wall {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 300;
+    animation: fadeIn 0.2s ease;
+}
+
+/* 内容区域 */
+.wall-content {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    width: 100%;
+    max-width: 720px;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+/* 标题栏 - 固定在顶部 */
+.wall-header {
+    position: sticky;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 0 0 12px 0;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.08);
+    background: white;
+    z-index: 10;
+}
+
+.wall-header h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--theme-text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.wall-close {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--theme-text);
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.wall-close:hover {
+    background: rgba(0, 0, 0, 0.1);
+    transform: scale(1.1);
+}
+
+/* 分类区域 */
+.wall-category {
+    margin-bottom: 24px;
+}
+
+.wall-category:last-child {
+    margin-bottom: 0;
+}
+
+.wall-category h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--theme-text);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* 徽章网格 - 响应式5列布局 */
+.wall-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 12px;
+}
+
+/* 单个徽章 */
+.wall-badge {
+    aspect-ratio: 1;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 8px;
+    background: rgba(0, 0, 0, 0.04);
+    border: 2px solid rgba(0, 0, 0, 0.06);
+    opacity: 0.5;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+}
+
+.wall-badge::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.3), transparent);
+    opacity: 0;
+    transition: opacity 0.25s;
+}
+
+.wall-badge:hover::before {
+    opacity: 1;
+}
+
+/* 已解锁徽章 */
+.wall-badge.unlocked {
+    opacity: 1;
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    border-color: rgba(251, 191, 36, 0.4);
+    box-shadow: 0 2px 8px rgba(251, 191, 36, 0.2);
+    cursor: pointer;
+}
+
+.wall-badge.unlocked:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 6px 20px rgba(251, 191, 36, 0.3);
+}
+
+/* 徽章图标 */
+.wall-badge-icon {
+    font-size: 32px;
+    margin-bottom: 6px;
+    filter: grayscale(1);
+    transition: filter 0.25s;
+}
+
+.wall-badge.unlocked .wall-badge-icon {
+    filter: grayscale(0);
+}
+
+/* 徽章名称 */
+.wall-badge-name {
+    font-size: 10px;
+    text-align: center;
+    color: var(--theme-text);
+    line-height: 1.3;
+    font-weight: 500;
+    max-width: 100%;
+    word-break: break-word;
+}
+
+/* 等级标签 */
+.badge-level {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    font-size: 9px;
+    font-weight: 700;
+    color: white;
+    background: var(--theme-primary);
+    padding: 2px 6px;
+    border-radius: 10px;
+    line-height: 1;
+}
+
+/* 不同类别的徽章颜色 */
+.badge-category-basic .wall-badge.unlocked {
+    background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+    border-color: rgba(59, 130, 246, 0.4);
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+}
+
+.badge-category-basic .wall-badge.unlocked:hover {
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3);
+}
+
+.badge-category-advanced .wall-badge.unlocked {
+    background: linear-gradient(135deg, #fce7f3, #fbcfe8);
+    border-color: rgba(236, 72, 153, 0.4);
+    box-shadow: 0 2px 8px rgba(236, 72, 153, 0.2);
+}
+
+.badge-category-advanced .wall-badge.unlocked:hover {
+    box-shadow: 0 6px 20px rgba(236, 72, 153, 0.3);
+}
+
+.badge-category-solar .wall-badge.unlocked {
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    border-color: rgba(251, 191, 36, 0.4);
+    box-shadow: 0 2px 8px rgba(251, 191, 36, 0.2);
+}
+
+.badge-category-solar .wall-badge.unlocked:hover {
+    box-shadow: 0 6px 20px rgba(251, 191, 36, 0.3);
+}
+
+.badge-category-scenic .wall-badge.unlocked {
+    background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+    border-color: rgba(16, 185, 129, 0.4);
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
+}
+
+.badge-category-scenic .wall-badge.unlocked:hover {
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+}
+
+/* 统计信息 */
+.wall-stats {
+    display: flex;
+    gap: 16px;
+    padding: 12px 16px;
+    background: rgba(0, 0, 0, 0.03);
+    border-radius: 10px;
+    margin-bottom: 16px;
+}
+
+.wall-stat {
+    flex: 1;
+    text-align: center;
+}
+
+.wall-stat-value {
+    display: block;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--theme-primary);
+}
+
+.wall-stat-label {
+    display: block;
+    font-size: 11px;
+    color: var(--theme-text-secondary);
+    margin-top: 2px;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .wall-content {
+        max-width: 100%;
+        padding: 20px;
+    }
+    
+    .wall-grid {
+        grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+        gap: 10px;
+    }
+    
+    .wall-badge-icon {
+        font-size: 28px;
+    }
+    
+    .wall-badge-name {
+        font-size: 9px;
+    }
+}
+
+@media (max-width: 480px) {
+    .wall-grid {
+        grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
+        gap: 8px;
+    }
+    
+    .wall-badge {
+        padding: 8px 6px;
+    }
+    
+    .wall-badge-icon {
+        font-size: 24px;
+    }
+}
+
+/* 滚动条样式 */
+.wall-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.wall-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.wall-content::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+.wall-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3);
+}
