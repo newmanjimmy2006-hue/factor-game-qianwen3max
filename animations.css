@@ -1,0 +1,605 @@
+/* ============================================
+   macOS风格动画系统 + Origami 商店动画修复
+   ============================================ */
+
+/* 入场动画 */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+/* 【新增】Origami 展开动画 - 从商店按钮位置展开 */
+@keyframes origamiExpand {
+    0% {
+        opacity: 0;
+        transform: translate(120px, 60px) scale(0.4);
+        transform-origin: bottom left;
+    }
+    60% {
+        opacity: 1;
+        transform: translate(-50%, -52%) scale(1.02);
+        transform-origin: center center;
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+        transform-origin: center center;
+    }
+}
+
+/* 【新增】Origami 收起动画 */
+@keyframes origamiCollapse {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+        transform-origin: center center;
+    }
+    100% {
+        opacity: 0;
+        transform: translate(120px, 60px) scale(0.4);
+        transform-origin: bottom left;
+    }
+}
+
+/* 【新增】商店面板动画状态类 */
+.shop-panel.showing {
+    animation: origamiExpand 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    visibility: visible !important;
+}
+
+.shop-panel.hiding {
+    animation: origamiCollapse 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* 弹出动画 */
+@keyframes popIn {
+    0% {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    70% {
+        transform: scale(1.02);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes popOut {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+}
+
+/* 正确/错误动画 */
+@keyframes correct {
+    0%, 100% { transform: scale(1); }
+    50% { 
+        transform: scale(1.03);
+        box-shadow: 0 0 20px rgba(52, 199, 89, 0.4);
+    }
+}
+
+@keyframes wrong {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-6px); }
+    40% { transform: translateX(6px); }
+    60% { transform: translateX(-4px); }
+    80% { transform: translateX(4px); }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+    20%, 40%, 60%, 80% { transform: translateX(4px); }
+}
+
+/* 脉冲动画 */
+@keyframes pulse {
+    0%, 100% { 
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% { 
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+}
+
+@keyframes pulse-ring {
+    0% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}
+
+/* 浮动动画 */
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+
+@keyframes floatUp {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-40px);
+    }
+}
+
+/* 旋转动画 */
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* 闪烁动画 */
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* 弹跳动画 */
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* 徽章获得动画 */
+@keyframes badgePop {
+    0% {
+        transform: scale(0) rotate(-180deg);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.15) rotate(5deg);
+    }
+    100% {
+        transform: scale(1) rotate(0);
+        opacity: 1;
+    }
+}
+
+@keyframes badgeGlow {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 20px 10px rgba(251, 191, 36, 0);
+    }
+}
+
+/* 连击动画 */
+@keyframes streakPop {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0;
+    }
+}
+
+/* 积分浮动动画 */
+@keyframes scoreFloat {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+}
+
+/* 粒子爆炸动画 */
+@keyframes particleExplode {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--tx), var(--ty)) scale(0);
+        opacity: 0;
+    }
+}
+
+/* 进度条动画 */
+@keyframes progressFill {
+    from { width: 0; }
+}
+
+/* 打字机动画 */
+@keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+/* 光标闪烁 */
+@keyframes cursor {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* 波浪动画 */
+@keyframes wave {
+    0%, 100% { transform: translateY(0); }
+    25% { transform: translateY(-4px); }
+    75% { transform: translateY(4px); }
+}
+
+/* 呼吸动画 */
+@keyframes breathe {
+    0%, 100% { 
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% { 
+        transform: scale(1.02);
+        opacity: 0.9;
+    }
+}
+
+/* 滑入滑出 */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
+/* 弹性动画 */
+@keyframes elastic {
+    0% { transform: scale(1); }
+    30% { transform: scale(1.15); }
+    50% { transform: scale(0.95); }
+    70% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* 翻转动画 */
+@keyframes flip {
+    0% { transform: perspective(400px) rotateY(0); }
+    100% { transform: perspective(400px) rotateY(360deg); }
+}
+
+/* 抖动动画 */
+@keyframes jitter {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(-1px, 1px); }
+    50% { transform: translate(1px, -1px); }
+    75% { transform: translate(-1px, -1px); }
+}
+
+/* 应用动画的类 */
+.animate-slideIn { animation: slideIn 0.3s ease; }
+.animate-slideInRight { animation: slideInRight 0.4s ease; }
+.animate-slideInLeft { animation: slideInLeft 0.4s ease; }
+.animate-scaleIn { animation: scaleIn 0.3s ease; }
+.animate-fadeIn { animation: fadeIn 0.3s ease; }
+.animate-popIn { animation: popIn 0.3s ease; }
+.animate-pulse { animation: pulse 2s infinite; }
+.animate-float { animation: float 3s ease-in-out infinite; }
+.animate-spin { animation: spin 1s linear infinite; }
+.animate-bounce { animation: bounce 1s ease infinite; }
+.animate-blink { animation: blink 1s ease infinite; }
+.animate-shake { animation: shake 0.4s ease; }
+.animate-elastic { animation: elastic 0.5s ease; }
+.animate-flip { animation: flip 0.6s ease; }
+
+/* 选项出现动画（带延迟） */
+.option {
+    animation: popIn 0.25s ease backwards;
+}
+
+.option:nth-child(1) { animation-delay: 0.03s; }
+.option:nth-child(2) { animation-delay: 0.06s; }
+.option:nth-child(3) { animation-delay: 0.09s; }
+.option:nth-child(4) { animation-delay: 0.12s; }
+.option:nth-child(5) { animation-delay: 0.15s; }
+.option:nth-child(6) { animation-delay: 0.18s; }
+
+/* 正确/错误状态 */
+.slot.correct {
+    animation: correct 0.4s ease;
+    border-color: var(--btn-success) !important;
+    background: rgba(52, 199, 89, 0.15) !important;
+}
+
+.slot.wrong {
+    animation: wrong 0.4s ease;
+    border-color: var(--btn-danger) !important;
+    background: rgba(255, 59, 48, 0.15) !important;
+}
+
+/* 按钮点击效果 */
+.mac-btn:active {
+    transform: scale(0.97);
+}
+
+/* 商店面板基础样式修复 */
+.shop-panel {
+    /* 确保初始状态不可见，防止FOUC */
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* 徽章墙打开动画 */
+.badges-wall {
+    animation: fadeIn 0.2s ease;
+}
+
+.wall-content {
+    animation: scaleIn 0.3s ease;
+}
+
+/* 徽章弹窗动画 */
+.badge-popup {
+    animation: slideInRight 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* 主题切换过渡 */
+body {
+    transition: background 0.4s ease;
+}
+
+.main-window,
+.scratchpad {
+    transition: all 0.4s ease;
+}
+
+/* 疲劳度变化动画 */
+#fatigue-level {
+    transition: color 0.3s ease;
+}
+
+/* 进度条过渡 */
+.progress-bar {
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 插槽过渡 */
+.slot {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 选项过渡 */
+.option {
+    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 卡片悬浮过渡 */
+.info-card,
+.question-card {
+    transition: all 0.2s ease;
+}
+
+/* 徽章获得特效 */
+.badge-item.unlocked {
+    animation: badgePop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+               badgeGlow 1s ease 0.5s;
+}
+
+/* 连击特效 */
+.streak-milestone {
+    animation: elastic 0.5s ease;
+}
+
+/* 积分增加特效 */
+.score-increase {
+    animation: floatUp 0.8s ease forwards;
+}
+
+/* 提示面板动画 */
+.hint-panel {
+    animation: slideDown 0.3s ease;
+}
+
+/* 模态框动画 */
+.modal-content {
+    animation: scaleIn 0.25s ease;
+}
+
+/* Toast动画 */
+.toast {
+    animation: slideIn 0.25s ease;
+}
+
+.toast.hiding {
+    animation: fadeOut 0.2s ease forwards;
+}
+
+/* 草稿区工具动画 */
+.tool-btn {
+    transition: all 0.15s ease;
+}
+
+.tool-btn.active {
+    animation: pulse 2s infinite;
+}
+
+/* 颜色选择器动画 */
+.color-btn {
+    transition: all 0.15s ease;
+}
+
+.color-btn:hover {
+    transform: scale(1.15);
+}
+
+.color-btn.active {
+    animation: pulse 2s infinite;
+}
+
+/* 菜单动画 */
+.menu-dropdown {
+    animation: slideDown 0.15s ease;
+}
+
+/* 统计数字变化动画 */
+.stat-value {
+    transition: color 0.3s ease;
+}
+
+.stat-value.changed {
+    animation: elastic 0.3s ease;
+}
+
+/* 窗口控制按钮悬停 */
+.window-btn {
+    transition: all 0.15s ease;
+}
+
+.window-btn:hover {
+    filter: brightness(0.85);
+}
+
+/* 工具栏按钮动画 */
+.toolbar-btn {
+    transition: all 0.15s ease;
+}
+
+.toolbar-btn.active {
+    animation: pulse 2s infinite;
+}
+
+/* 主题项动画 */
+.theme-item {
+    transition: all 0.2s ease;
+}
+
+.theme-item:hover {
+    transform: translateY(-1px);
+}
+
+.theme-item.active {
+    animation: elastic 0.3s ease;
+}
+
+/* 设置项动画 */
+.setting-item {
+    transition: background 0.2s ease;
+}
+
+.setting-item:hover {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+/* Toggle开关动画 */
+.toggle-slider {
+    transition: 0.3s;
+}
+
+.toggle-slider::before {
+    transition: 0.3s;
+}
+
+/* 禁用状态 */
+:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* 减少动画（无障碍） */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
